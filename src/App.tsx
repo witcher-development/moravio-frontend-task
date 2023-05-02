@@ -1,8 +1,15 @@
+import { QueryClientProvider, QueryClient } from 'react-query';
+
+import { HomePage } from '@home';
+
+
+const queryClient = new QueryClient();
+
 function App () {
 	return (
-		<>
-			Hello world!
-		</>
+		<QueryClientProvider client={queryClient}>
+			<HomePage />
+		</QueryClientProvider>
 	);
 }
 

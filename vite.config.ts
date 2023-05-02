@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       "@client": path.resolve(__dirname, "./src/client.ts"),
       "@env": path.resolve(__dirname, "./src/env.ts"),
+      "@home": path.resolve(__dirname, "./src/features/homePage/index.ts"),
     }
   },
 })
