@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
+import Masonry from '@mui/lab/Masonry';
 
 import logo from '/logo.png';
 
@@ -32,9 +33,10 @@ export const HomePage = () => {
 					onChange={(_, newPage) => page.update(newPage)}
 				/>
 			</Stack>
-			<div>
+			<Masonry columns={3} spacing={2}>
 				{gifs.images.map(({ id, title, url, width, height }) => (
 					<img
+						loading="lazy"
 						key={id}
 						src={url}
 						width={width}
@@ -42,7 +44,7 @@ export const HomePage = () => {
 						alt={title}
 					/>
 				))}
-			</div>
+			</Masonry>
 			<Box alignItems="center" paddingTop={2}>
 				<Pagination
 					count={gifs.total ? Math.ceil(gifs.total / 50) : 10}
