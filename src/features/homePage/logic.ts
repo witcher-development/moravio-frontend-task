@@ -19,37 +19,40 @@ const useDebouncedValue = (value: string) => {
 	return debouncedValue;
 };
 
-export const useGetGifs = (searchQuery: string) => {
+export const useGetGifs = (searchQuery: string, page: number) => {
+	const offset = page * 50;
 	const debouncedSearchQuery = useDebouncedValue(searchQuery);
 	const trendingData = useQuery(
-		'trendingGifs',
-		fetchTrendingGifs,
+		['trendingGifs', offset],
+		() => fetchTrendingGifs(offset),
 		{ enabled: !debouncedSearchQuery, keepPreviousData: true }
 	);
 	const searchData = useQuery(
-		['gifs', debouncedSearchQuery],
-		() => searchGifs(debouncedSearchQuery),
+		['gifs', debouncedSearchQuery, offset],
+		() => searchGifs(debouncedSearchQuery, offset),
 		{ enabled: !!debouncedSearchQuery, keepPreviousData: true }
 	);
 
-	const results: GifsData = {
+	let results: GifsData = {
 		images: [],
-		pagination: {}
+		total: 0
 	};
 	if (debouncedSearchQuery) {
 		if (searchData.status === 'loading') {
 			// TODO: Loading
 		} else if (searchData.status === 'success') {
-			results.images = gifResponseSchema.parse(searchData.data.data).images;
+			results = gifResponseSchema.parse(searchData.data.data);
 		}
 	}
 	if (!debouncedSearchQuery) {
 		if (trendingData.status === 'loading') {
 			// TODO: Loading
 		} else if (trendingData.status === 'success') {
-			results.images = gifResponseSchema.parse(trendingData.data.data).images;
+			results = gifResponseSchema.parse(trendingData.data.data);
 		}
 	}
+	// Giphy limitation
+	results.total = results.total < 5000 ? results.total : 4999;
 
 
 	return results;

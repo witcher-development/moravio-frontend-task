@@ -1,5 +1,11 @@
 import { giphyClient } from '@client';
 
 
-export const fetchTrendingGifs = () => giphyClient.get('gifs/trending');
-export const searchGifs = (q: string) => giphyClient.get('gifs/search', { params: { q } });
+export const fetchTrendingGifs = (offset: number) => giphyClient.get(
+	'gifs/trending',
+	{ params: { offset, limit: 50 } }
+);
+export const searchGifs = (q: string, offset: number) => giphyClient.get(
+	'gifs/search',
+	{ params: { q, offset, limit: 50 } }
+);

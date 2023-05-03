@@ -13,7 +13,9 @@ export const gifResponseSchema = z.object({
 			})
 		})
 	})),
-	pagination: z.object({})
+	pagination: z.object({
+		total_count: z.number()
+	})
 }).transform(({ data, pagination }) => {
 	const simplifiedImages = data.map(({ id, title, images }) => ({
 		id,
@@ -25,7 +27,7 @@ export const gifResponseSchema = z.object({
 
 	return {
 		images: simplifiedImages,
-		pagination
+		total: pagination.total_count
 	};
 });
 
