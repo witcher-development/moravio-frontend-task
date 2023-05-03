@@ -1,21 +1,23 @@
 import { useQuery } from 'react-query';
 
 import { fetchTrendingGifs } from './client.ts';
+import { gifResponseSchema } from './schema.ts';
 
 
 export const HomePage = () => {
 	const { status, data } = useQuery('', () => fetchTrendingGifs());
 
 	if (status !== 'success') return <></>;
+	const typedData = gifResponseSchema.parse(data.data);
 	return (
 		<div>
-			{data.data.data.map((g) => (
+			{typedData.images.map(({ id, title, url, width, height }) => (
 				<img
-					key={g.id}
-					src={g.images['original'].url}
-					width={g.images['original'].width}
-					height={g.images['original'].height}
-					alt={g.title}
+					key={id}
+					src={url}
+					width={width}
+					height={height}
+					alt={title}
 				/>
 			))}
 		</div>
