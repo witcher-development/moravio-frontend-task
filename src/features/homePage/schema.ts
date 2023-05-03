@@ -28,3 +28,5 @@ export const gifResponseSchema = z.object({
 		pagination
 	};
 });
+
+export type GifsData = z.infer<typeof gifResponseSchema>

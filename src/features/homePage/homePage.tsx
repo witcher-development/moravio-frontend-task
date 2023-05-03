@@ -1,17 +1,17 @@
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+import TextField from '@mui/material/TextField';
 
-import { fetchTrendingGifs } from './client.ts';
-import { gifResponseSchema } from './schema.ts';
+import { useGetGifs } from './logic.ts';
 
 
 export const HomePage = () => {
-	const { status, data } = useQuery('', () => fetchTrendingGifs());
+	const [search, setSearch] = useState('');
+	const gifs = useGetGifs(search);
 
-	if (status !== 'success') return <></>;
-	const typedData = gifResponseSchema.parse(data.data);
 	return (
 		<div>
-			{typedData.images.map(({ id, title, url, width, height }) => (
+			<TextField id="search" label="Search" variant="outlined" value={search} onChange={(e) => setSearch(e.target.value)} />
+			{gifs.images.map(({ id, title, url, width, height }) => (
 				<img
 					key={id}
 					src={url}
