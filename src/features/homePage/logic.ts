@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { useSearchParams } from 'react-router-dom';
 import debounce from 'lodash/debounce';
 
 
@@ -56,4 +57,46 @@ export const useGetGifs = (searchQuery: string, page: number) => {
 
 
 	return results;
+};
+
+export const usePagination = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [search, setSearch] = useState('');
+	const [page, setPage] = useState(1);
+
+	// Sync SearchParams with state on load
+	useEffect(() => {
+		const newSearch = searchParams.get('search') || '';
+		const newPage = Number(searchParams.get('page')) || 1;
+
+		setSearch(newSearch);
+		setPage(newPage);
+
+		setSearchParams([
+			['search', newSearch],
+			['page', String(newPage)],
+		]);
+	}, []);
+	// Change SearchParams to match state
+	useEffect(() => {
+		setSearchParams([
+			['search', search],
+			['page', String(page)],
+		]);
+	}, [search, page]);
+
+	return {
+		search: {
+			value: search,
+			update: (newSearch: string) => {
+				setSearch(newSearch);
+				// Don't like this unexpected side-effect, but seems to be the best cheap option
+				setPage(1);
+			},
+		},
+		page: {
+			value: page,
+			update: setPage,
+		}
+	};
 };

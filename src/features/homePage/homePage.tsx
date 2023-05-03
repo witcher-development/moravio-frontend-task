@@ -1,15 +1,13 @@
-import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 
-import { useGetGifs } from './logic.ts';
+import { useGetGifs, usePagination } from './logic.ts';
 
 
 export const HomePage = () => {
-	const [search, setSearch] = useState('');
-	const [page, setPage] = useState(1);
-	const gifs = useGetGifs(search, page - 1);
+	const { search, page } = usePagination();
+	const gifs = useGetGifs(search.value, page.value - 1);
 
 	return (
 		<Stack>
@@ -18,13 +16,13 @@ export const HomePage = () => {
 					id="search"
 					label="Search"
 					variant="outlined"
-					value={search}
-					onChange={(e) => setSearch(e.target.value)}
+					value={search.value}
+					onChange={(e) => search.update(e.target.value)}
 				/>
 				<Pagination
 					count={gifs.total ? Math.ceil(gifs.total / 50) : 10}
-					page={page}
-					onChange={(_, newPage) => setPage(newPage)}
+					page={page.value}
+					onChange={(_, newPage) => page.update(newPage)}
 				/>
 			</div>
 			<div>

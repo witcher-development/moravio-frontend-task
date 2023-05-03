@@ -1,6 +1,7 @@
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { CssBaseline } from '@mui/material';
+import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 
 import { HomePage } from '@home';
@@ -17,10 +18,12 @@ const darkTheme = createTheme({
 function App () {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<ThemeProvider theme={darkTheme}>
-				<CssBaseline />
-				<HomePage />
-			</ThemeProvider>
+			<BrowserRouter>
+				<ThemeProvider theme={darkTheme}>
+					<CssBaseline />
+					<HomePage />
+				</ThemeProvider>
+			</BrowserRouter>
 		</QueryClientProvider>
 	);
 }
