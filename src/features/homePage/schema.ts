@@ -32,3 +32,4 @@ export const gifResponseSchema = z.object({
 });
 
 export type GifsData = z.infer<typeof gifResponseSchema>
+export type Gif = GifsData['images'][0]

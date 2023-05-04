@@ -1,13 +1,13 @@
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Masonry from '@mui/lab/Masonry';
 
 import logo from '/logo.png';
 
 import { useGetGifs, usePagination } from './logic.ts';
+import { GifComponent } from './GifComponent.tsx';
 
 
 export const HomePage = () => {
@@ -35,23 +35,23 @@ export const HomePage = () => {
 			</Stack>
 			<Masonry columns={3} spacing={2}>
 				{gifs.images.map(({ id, title, url, width, height }) => (
-					<img
-						loading="lazy"
+					<GifComponent
 						key={id}
-						src={url}
+						id={id}
+						url={url}
 						width={width}
 						height={height}
-						alt={title}
+						title={title}
 					/>
 				))}
 			</Masonry>
-			<Box alignItems="center" paddingTop={2}>
+			<Stack direction="row" justifyContent="center" paddingTop={2}>
 				<Pagination
 					count={gifs.total ? Math.ceil(gifs.total / 50) : 10}
 					page={page.value}
 					onChange={(_, newPage) => page.update(newPage)}
 				/>
-			</Box>
+			</Stack>
 		</Container>
 	);
 };
